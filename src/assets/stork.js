@@ -1,3 +1,6 @@
+const maxImagesPermitted = 7;
+const baseApiUrl = 'http://localhost:8000';
+
 function isAnImage(file) {
     if (file && file.type) {
         return file.type.startsWith('image/');
@@ -46,9 +49,9 @@ function updateResultsUI(result) {
     }
 };
 
-function postFormData(formData) {
+function postFormData(formData, baseApiUrl) {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8000/upload', true);
+    xhr.open('POST', `${baseApiUrl}/upload`, true);
 
     var loaders = [...document.getElementsByClassName('loader')];
     xhr.onload = function (e) {
@@ -162,18 +165,17 @@ fileSelect.value = '';
 const errorMessage = document.getElementById('error-message');
 const imagesPlaceholder = document.getElementById('imageCards-placeholder');
 const currentImages = {};
-const maxImagesPermitted = 7;
 const addImagesButton = document.getElementById('add-images-button');
 const clearAllButton = document.getElementById('clear-all-button');
 const results = document.getElementById('results-placeholder');
 
 clearAllButton.addEventListener('click', () => { clearAllImageCards(); } );
 
-function submit(images) {
-    postFormData(getFormData(images));
+function submit(images, baseApiUrl) {
+    postFormData(getFormData(images), baseApiUrl);
 };
 
-function handleFiles(files) {
+function handleFiles(files, baseApiUrl) {
     if (files && files.length) {
         const images = [...files].filter(file => isAnImage(file));
         let numberOfcurrentImages = Object.keys(currentImages).length;
@@ -189,17 +191,17 @@ function handleFiles(files) {
         if (numberOfImagesIfAccepted <= maxImagesPermitted) {
             imagesToSend.map(image => { currentImages[image.name] = image; });
             createImagesUIFromFiles(imagesToSend, imagesPlaceholder);
-            submit(imagesToSend);
+            submit(imagesToSend, baseApiUrl);
         }
     }
 };
 
 fileSelect.addEventListener('change', function(e) {
-    handleFiles(e.target.files);
+    handleFiles(e.target.files, baseApiUrl);
 });
 
 function dropHandler(event) {
-    handleFiles(event.dataTransfer.files);
+    handleFiles(event.dataTransfer.files, baseApiUrl);
 };
 
 function preventDefaults (e) {
