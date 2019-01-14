@@ -1,5 +1,7 @@
+// Env variables
 const maxImagesPermitted = 7;
 const baseApiUrl = 'http://localhost:8000';
+// End Env variables
 
 function isAnImage(file) {
     if (file && file.type) {
