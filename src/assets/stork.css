@@ -94,6 +94,7 @@ body {
 
 .bar {
     height: 6px;
+    margin-bottom: 10px;
 }
 
 .poor {
@@ -130,7 +131,11 @@ body {
     color: #ccc;
 }
 
-.legend {
+.legend-item {
+    margin: 5px 0;
+}
+
+.legend-marker {
     margin: 0 5px 2px 0;
     padding: 3px;
     display: inline-block;
