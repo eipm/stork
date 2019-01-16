@@ -3,6 +3,10 @@ const maxImagesPermitted = 7;
 const baseApiUrl = 'http://localhost:8000';
 // End Env variables
 
+function average(array) {
+    return array.reduce((a,b) => a + b, 0) / array.length;
+}
+
 function isAnImage(file) {
     if (file && file.type) {
         return file.type.startsWith('image/');
@@ -28,15 +32,28 @@ function calculateMajorVoteResult() {
         return null;
     }
 
-    const goodResults = Object.keys(currentImages).filter(x => {
-        return currentImages[x].result.Good > currentImages[x].result.Poor;
-    });
+    const goodResults = [], poorResults = [];
+    for (const x of Object.keys(currentImages)) {
+        if (currentImages[x].result.Good > currentImages[x].result.Poor) {
+            goodResults.push(currentImages[x]);
+        } else {
+            poorResults.push(currentImages[x])
+        }
+    }
 
     let result = 'Unclear';
     if (goodResults.length < currentImagesLength / 2) {
         result = 'Poor';
     } else if ((goodResults.length > currentImagesLength / 2)) {
         result = 'Good';
+    } else {
+        const averageGood = average(goodResults.map(x => x.result.Good));
+        const averagePoor = average(poorResults.map(x => x.result.Poor));
+        if (averageGood > averagePoor) {
+            result = 'Good';
+        } else if  (averageGood < averagePoor) {
+            result = 'Poor';
+        }
     }
 
     return result;
