@@ -27,10 +27,10 @@ $ python predict.py v1 ../result/ ../../Images/test output.txt 2
 #### Environment Variables
 
 ```bash
-OUTPUT_DIR=~/Documents/2.GitHub/stork/data/output/
-UPLOAD_DIR=~/Documents/2.GitHub/stork/data/uploads/
-PROCESS_DIR=~/Documents/2.GitHub/stork/data/process/
-RESULT_DIR=~/Documents/2.GitHub/stork/data/result/
+OUTPUT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/output/
+UPLOAD_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/uploads/
+PROCESS_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/process/
+RESULT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/result/
 ```
 
 -v ${INPUT_DIR}:/input:ro \
