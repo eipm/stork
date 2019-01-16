@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Stork</title>
+        <link rel="stylesheet" href="assets/materialize.min.css">
+        <link href="assets/font-material-icons.css" rel="stylesheet">
+        <link href="assets/stork.css" rel="stylesheet">
+    </head>
+    <style>
+            
+        </style>
+    <body>
+        <div class="header center">
+            <img src="assets/logo.jpg" alt="Stork logo" height="60px">
+        </div>
+        <div class="block">
+
+            <div class="margin10 inline-block">
+                <label for="file-select" id="add-images-button" class="btn">
+                    <i class="material-icons left">add</i>Add Images
+                </label>
+                <input type="file" id="file-select" multiple="multiple" accept="image/*" class="hidden" />
+                <div id="error-message" class="error-message hidden">You can add up to 7 images</div>
+            </div>
+            <div id="clear-all-button" class="btn disabled inline-block margin10 float-right">Clear All</div>
+
+        </div>
+        <div>
+            <div id="imageCards-placeholder" class="margin10" ondrop="dropHandler(event);">
+                <div class="center info-text">Drag and drop your images here</div>
+            </div>
+        </div>
+        
+        
+        <div id="results-placeholder" class="margin10 hidden">
+            Major vote result: <strong></strong>
+        </div>
+
+        <script type="text/javascript" src="assets/stork.js"></script>
+    </body>
+</html>
