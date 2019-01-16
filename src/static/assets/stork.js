@@ -1,6 +1,6 @@
 // Env variables
 const maxImagesPermitted = 7;
-const baseApiUrl = window.location.port !== '' ? `:${window.location.port}/api` : 'api';
+const baseApiUrl = 'api';//window.location.port !== '' ? `:${window.location.port}/api` : 'api';
 // End Env variables
 
 function average(array) {

@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import csv
 import ntpath
+import datetime
 
 # Relative Imports
 from stork_src.slim.predict import stork_predict
@@ -41,7 +42,7 @@ def serve_assets(path):
 
 @app.route('/api', methods = ['GET'])
 def api_swagger():
-    return "Placeholder for Swagger API"
+    return "Swagger API coming soon..."
 
 @app.route('/api/healthcheck', methods = ['GET'])
 def healthcheck():
@@ -55,81 +56,52 @@ def upload_image():
         if 'image' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        file = request.files['image']
-        # if user does not select file, browser also
-        # submit an empty part without filename
 
-        # print(request)
-        # print(request.files)
+        # 1. Create request directory
+        request_id = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S_%f")
+        request_dir = (os.path.join(app.config['UPLOAD_DIR'], request_id))
+        if not os.path.exists(request_dir):
+            os.makedirs(request_dir)
 
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_DIR'], filename))
+        response_dict = {}
+        images_dict = {}
+        # For each uploaded image
+        for image in request.files.getlist("image"):
+        
+            # 2. Save Image
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(request_dir, filename))
 
-            # Open file, parse txt and convert to json.
-            output_filename = 'output_single.txt'           
-            output_file = os.path.join(OUTPUT_DIR, output_filename)
+            images_dict[filename] = image.filename
 
-            # Call Image Classification here
-            stork_predict(['', 'v1', RESULT_DIR, UPLOAD_DIR, output_file, 2])
+            # =============#
+            # Analyze Data #
+            # =============#
 
-            # python3 ${PREDICT_DIR}/predict.py v1 ${RESULT_DIR} /input/good/ /output/output_good.txt 2
+        # 3. Specify Output log            
+        output_filename = 'Output_' + request_id + '.txt'
+        output_file = os.path.join(OUTPUT_DIR, output_filename)
 
-            # Parse output data
+        # Demo
+        # output_filename = 'output_good.txt'           
+        # output_file = os.path.join(OUTPUT_DIR, output_filename)
 
-            # Open file, parse txt and convert to json.
-            output_filename = 'output_single.txt'           
-            output_file = os.path.join(OUTPUT_DIR, output_filename)
-            
-            image_results = list(csv.reader(open(output_file, 'r', encoding='utf8'), delimiter='\t'))
+        print('running stork...')
+        # 4. Run Stork
+        stork_predict(['', 'v1', RESULT_DIR, UPLOAD_DIR, output_file, 2])
+        print('running stork... - done')
 
-            # Single Image
-            image_result = image_results[0]
-            image_filename = ntpath.basename(image_result[0])
-            image_good = image_result[1]
-            image_poor = image_result[2]
+        # 5. Parse Stork Results            
+        # image_results = list(csv.reader(open(output_file, 'r', encoding='utf8'), delimiter='\t'))
 
-            response = {image_filename: {
-                    'Good': image_good,
-                    'Poor': image_poor}
-                }
+        # ==================#
+        # Send JSON Results #
+        # ==================#
 
-            return jsonify(response), 200
+        # for image_result in image_results:
+            # response_dict[images_dict[ntpath.basename(image_result[0])] = { 'Good': image_result[1], 'Poor': image_result[2]}
 
-            # Array of images
-            # response_array=[]
-
-            # for image_result in image_results:
-
-            #     image_filename=ntpath.basename(image_result[0])
-            #     image_good=image_result[1]
-            #     image_poor=image_result[2]
-
-            #     response= {image_filename: {
-            #         'Good': image_good,
-            #         'Poor': image_poor}
-            #     }
-
-            #     response_array.append(response)
-
-    
-            # return jsonify(response_array), 200
-
-
-
-
-            # Random values
-            # good_val=random.uniform(0, 1)
-            # poor_val=random.uniform(0, 1)
-
-            # return jsonify(
-            #     {file.filename: {
-            #         'Good': good_val,
-            #         'Poor': poor_val}
-            #     }), 200
+        # return jsonify(response_dict), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
