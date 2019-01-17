@@ -8,7 +8,6 @@ import ntpath
 import datetime
 
 # Relative Imports
-from stork_src.slim.predict import stork_predict
 from api.version import api_version
 
 # Define Directories
