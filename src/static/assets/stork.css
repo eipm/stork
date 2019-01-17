@@ -1,0 +1,142 @@
+* {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+}
+
+body {
+    margin:20px;
+}
+
+.btn {
+    background-color: #3498db;
+}
+
+.btn:hover{
+    background-color: #2378ac;
+}
+
+.hidden {
+    display: none;
+}
+
+.error-message {
+    color: red;
+}
+
+.center {
+    text-align: center;
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 100px;
+    height: 100px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#imageCards-placeholder {
+    background-color: whitesmoke;
+    padding: 5px;
+    min-height: 600px;  
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px dashed #ccc;
+}
+
+#imageCards-placeholder.highlight {
+    border-color: #3498db;
+}
+
+.image-container {
+    position: relative;
+    margin: 10px;
+    width: 330px;
+}
+
+.delete-image-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 5px 0px;
+    background-color:rgba(0, 0, 0, 0.3);
+    color:white;
+}
+
+.delete-image-button:hover {
+    cursor: pointer;
+    background-color: red;
+}
+
+.card-file-name {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 24px 24px 0;
+}
+
+.bar {
+    height: 6px;
+    margin-bottom: 10px;
+}
+
+.poor {
+    background-color: orange;
+}
+
+.good {
+    background-color: #4CAF50;
+}
+
+.margin10 {
+    margin: 10px;
+}
+
+.block{
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.float-right {
+    float: right;
+}
+
+.center {
+    text-align: center;
+    align-self: center;
+    width: 100%;
+}
+
+.info-text {
+    color: #ccc;
+}
+
+.legend-item {
+    margin: 5px 0;
+}
+
+.legend-marker {
+    margin: 0 5px 2px 0;
+    padding: 3px;
+    display: inline-block;
+}
