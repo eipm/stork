@@ -153,7 +153,7 @@ function postFormData(formData, baseApiUrl) {
                 const result = card.getElementsByClassName('results')[0];
                 result.classList.remove('hidden');
             });
-            updateResultsUI(calculateMajorVoteResult());
+            // updateResultsUI(calculateMajorVoteResult());
         } else {
             alert('An error occurred!');
         }
