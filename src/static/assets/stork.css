@@ -4,13 +4,21 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    padding-bottom:125px;
+}
+
+.wrapper {
     margin:20px;
+    min-height:100%;
+    position:relative;
 }
 
 footer {
-    position: absolute;
-    right: 0;
-    left: 0;
+    position: fixed;
+    width: 100%;
     bottom: 0;
     text-align: center;
     background-color: whitesmoke;
