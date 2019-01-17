@@ -31,6 +31,7 @@ OUTPUT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/output/
 UPLOAD_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/uploads/
 PROCESS_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/process/
 RESULT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/result/
+USERS_DICT="{ 'stork': 'eipm' }"
 ```
 
 -v ${INPUT_DIR}:/input:ro \
@@ -38,6 +39,7 @@ RESULT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/result/
 ```bash
 docker run -it --rm --name stork \
 -p 3000:80 \
+-e USERS_DICT \
 -v ${OUTPUT_DIR}:/output \
 -v ${UPLOAD_DIR}:/uploads \
 -v ${PROCESS_DIR}:/stork/src/stork_src/process:ro \
