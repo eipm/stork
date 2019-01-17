@@ -17,7 +17,7 @@ UPLOAD_DIR = '/uploads'
 OUTPUT_DIR = '/output'
 STATIC_DIR = '/stork/src'
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['jpg'])
 
 static_file_dir = os.path.join(STATIC_DIR, 'static')
 
@@ -58,8 +58,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     if username and users_dict[username] == password:
-        redirect_to_index = redirect('/')
-        response = make_response(redirect_to_index)
+        response = make_response()
         uuid = str(myuuid.uuid4())
         response.set_cookie('stork-auth', uuid, max_age=3600)
         return response

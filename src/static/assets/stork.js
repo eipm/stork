@@ -69,7 +69,7 @@ function average(array) {
 
 function isAnImage(file) {
     if (file && file.type) {
-        return file.type.startsWith('image/');
+        return file.type.startsWith('image/jpeg');
     }
 
     return false;
@@ -153,7 +153,7 @@ function postFormData(formData, baseApiUrl) {
                 const result = card.getElementsByClassName('results')[0];
                 result.classList.remove('hidden');
             });
-            updateResultsUI(calculateMajorVoteResult());
+            // updateResultsUI(calculateMajorVoteResult());
         } else {
             alert('An error occurred!');
         }
