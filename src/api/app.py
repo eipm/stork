@@ -17,7 +17,7 @@ UPLOAD_DIR = '/uploads'
 OUTPUT_DIR = '/output'
 STATIC_DIR = '/stork/src'
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['jpg'])
 
 static_file_dir = os.path.join(STATIC_DIR, 'static')
 
