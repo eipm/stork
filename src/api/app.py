@@ -15,8 +15,6 @@ from api.version import api_version
 UPLOAD_DIR = '/uploads'
 OUTPUT_DIR = '/output'
 STATIC_DIR = '/stork/src'
-RESULT_DIR = '/stork/src/stork_src/result'
-# RESULT_DIR = os.RESULT_DIR
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -79,29 +77,24 @@ def upload_image():
             # =============#
 
         # 3. Specify Output log            
-        output_filename = 'Output_' + request_id + '.txt'
+        output_filename = 'output_' + request_id + '.txt'
         output_file = os.path.join(OUTPUT_DIR, output_filename)
 
-        # Demo
-        # output_filename = 'output_good.txt'           
-        # output_file = os.path.join(OUTPUT_DIR, output_filename)
-
-        print('running stork...')
         # 4. Run Stork
-        stork_predict(['', 'v1', RESULT_DIR, UPLOAD_DIR, output_file, 2])
-        print('running stork... - done')
+        python_command='python3 ' + os.environ['PREDICT_DIR'] + '/predict.py v1 ' + os.environ['RESULT_DIR'] + ' ' + request_dir + ' ' + output_file + ' 2'
+        os.system(python_command)
 
         # 5. Parse Stork Results            
-        # image_results = list(csv.reader(open(output_file, 'r', encoding='utf8'), delimiter='\t'))
+        image_results = list(csv.reader(open(output_file, 'r', encoding='utf8'), delimiter='\t'))
 
         # ==================#
         # Send JSON Results #
         # ==================#
 
-        # for image_result in image_results:
-            # response_dict[images_dict[ntpath.basename(image_result[0])] = { 'Good': image_result[1], 'Poor': image_result[2]}
+        for image_result in image_results:
+            response_dict[images_dict[ntpath.basename(image_result[0])]] = { 'Good': image_result[1], 'Poor': image_result[2]}
 
-        # return jsonify(response_dict), 200
+        return jsonify(response_dict), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
