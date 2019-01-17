@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Stork - Login</title>
+        <link rel="stylesheet" href="assets/materialize.min.css">
+        <link href="assets/font-material-icons.css" rel="stylesheet">
+        <link href="assets/stork.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header center">
+            <img src="assets/logo.jpg" alt="Stork logo" height="60px">
+        </div>
+        <div class="block center login-container">
+            <h5 class="login-title">Log in</h5>
+            <form id="login-form">
+                <div class="input-field col">
+                    <input class="validate" type="text" name="username" id="username" required/>
+                    <label for="username">Enter your username</label>
+                </div>
+                <div class="input-field col">
+                    <input class="validate" type="password" name="password" id="password" required/>
+                    <label for="password">Enter your password</label>
+                </div>
+                <div class="center">
+                    <button type="submit" name="btn_login" class="btn">Log in</button>
+                </div>
+                <div class="margin10 error-message hidden" id="login-form-username-password-error">Wrong username or password</div>
+            </form>
+        </div>
+
+        <footer>
+            <div>Copyright © 2019 Englander Institute for Precision Medicine</div>
+            <div>Stork Version 1.0.0</div>
+            <img alt="logo" class="footer-logo" src="assets/LOGO_ENGLANDER_2LINE_RGB.png">
+        </footer>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        <script type="text/javascript" src="assets/stork.js"></script>
+    </body>
+</html>

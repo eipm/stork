@@ -1,7 +1,67 @@
 // Env variables
 const maxImagesPermitted = 7;
-const baseApiUrl = 'api';//window.location.port !== '' ? `:${window.location.port}/api` : 'api';
+const baseApiUrl = 'api'
 // End Env variables
+
+let token = getCookie('stork-auth');
+checkTokenAndRedirectIfEmpty();
+
+setInterval(function(){
+    checkTokenAndRedirectIfEmpty();
+}, 5000);
+
+function checkTokenAndRedirectIfEmpty() {
+    token = getCookie('stork-auth');
+    if (window.location.pathname !== '/login' && token === '') {
+        window.location.href = '/login';
+    }
+}
+
+function login(event) {
+    postLoginData(event.srcElement.username.value, event.srcElement.password.value, baseApiUrl);
+}
+
+function postLoginData(username, password, baseApiUrl) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `${baseApiUrl}/login`, true);
+    let formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+
+    xhr.onload = (e) => {
+        if (xhr.status === 200) {
+            window.location.href = '/';
+        } else {
+            document.getElementById('login-form-username-password-error').classList.remove('hidden');
+        }
+    };
+    xhr.onerror = (e) => alert('An error occurred!');
+    xhr.send(formData);
+}
+
+const loginForm = document.getElementById('login-form');
+if (loginForm) {
+    loginForm.addEventListener('submit', (event) => { 
+        event.preventDefault();
+        login(event);
+    })
+}
+
+function getCookie(cookieName) {
+    var name = cookieName + '=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return '';
+}
 
 function average(array) {
     return array.reduce((a,b) => a + b, 0) / array.length;
@@ -34,7 +94,7 @@ function calculateMajorVoteResult() {
 
     const goodResults = [], poorResults = [];
     for (const x of Object.keys(currentImages)) {
-        if (currentImages[x].result.Good > currentImages[x].result.Poor) {
+        if (Number(currentImages[x].result.Good) > Number(currentImages[x].result.Poor)) {
             goodResults.push(currentImages[x]);
         } else {
             poorResults.push(currentImages[x])
@@ -47,8 +107,8 @@ function calculateMajorVoteResult() {
     } else if ((goodResults.length > currentImagesLength / 2)) {
         result = 'Good';
     } else {
-        const averageGood = average(goodResults.map(x => x.result.Good));
-        const averagePoor = average(poorResults.map(x => x.result.Poor));
+        const averageGood = average(goodResults.map(x => Number(x.result.Good)));
+        const averagePoor = average(poorResults.map(x => Number(x.result.Poor)));
         if (averageGood > averagePoor) {
             result = 'Good';
         } else if  (averageGood < averagePoor) {
@@ -71,6 +131,7 @@ function updateResultsUI(result) {
 function postFormData(formData, baseApiUrl) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', `${baseApiUrl}/upload`, true);
+    xhr.setRequestHeader('Authorization','Basic ' + token);
 
     var loaders = [...document.getElementsByClassName('loader')];
     xhr.onload = function (e) {
@@ -96,7 +157,6 @@ function postFormData(formData, baseApiUrl) {
         } else {
             alert('An error occurred!');
         }
-    
     };
     xhr.onerror = () => {
         loaders.map(x => x.classList.add('hidden'));
@@ -178,18 +238,6 @@ function createImagesUIFromFiles(files, imagesPlaceholder) {
     }
 };
 
-const form = document.getElementById('file-form');
-const fileSelect = document.getElementById('file-select');
-fileSelect.value = '';
-const errorMessage = document.getElementById('error-message');
-const imagesPlaceholder = document.getElementById('imageCards-placeholder');
-const currentImages = {};
-const addImagesButton = document.getElementById('add-images-button');
-const clearAllButton = document.getElementById('clear-all-button');
-const results = document.getElementById('results-placeholder');
-
-clearAllButton.addEventListener('click', () => { clearAllImageCards(); } );
-
 function submit(images, baseApiUrl) {
     postFormData(getFormData(images), baseApiUrl);
 };
@@ -215,10 +263,6 @@ function handleFiles(files, baseApiUrl) {
     }
 };
 
-fileSelect.addEventListener('change', function(e) {
-    handleFiles(e.target.files, baseApiUrl);
-});
-
 function dropHandler(event) {
     handleFiles(event.dataTransfer.files, baseApiUrl);
 };
@@ -228,23 +272,44 @@ function preventDefaults (e) {
     e.stopPropagation();
 }
 
-dropArea = imagesPlaceholder;
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, preventDefaults, false);
-});
+const form = document.getElementById('file-form');
+const errorMessage = document.getElementById('error-message');
+const currentImages = {};
+const addImagesButton = document.getElementById('add-images-button');
+const results = document.getElementById('results-placeholder');
+const fileSelect = document.getElementById('file-select');
+if (fileSelect) {
+    fileSelect.value = '';
+    fileSelect.addEventListener('change', function(e) {
+        handleFiles(e.target.files, baseApiUrl);
+    });
+}
 
-['dragenter', 'dragover'].forEach(eventName => {
-    dropArea.addEventListener(eventName, highlight, false);
-});
+const clearAllButton = document.getElementById('clear-all-button');
+if (clearAllButton) {
+    clearAllButton.addEventListener('click', () => { clearAllImageCards(); } );
+}
 
-['dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, unhighlight, false);
-});
-
-function highlight(e) {
-    dropArea.classList.add('highlight');
-};
-
-function unhighlight(e) {
-    dropArea.classList.remove('highlight');
-};
+const imagesPlaceholder = document.getElementById('imageCards-placeholder');
+if (imagesPlaceholder) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        imagesPlaceholder.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        imagesPlaceholder.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        imagesPlaceholder.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight(e) {
+        imagesPlaceholder.classList.add('highlight');
+    };
+    
+    function unhighlight(e) {
+        imagesPlaceholder.classList.remove('highlight');
+    };
+    
+}

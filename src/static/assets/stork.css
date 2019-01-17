@@ -7,6 +7,27 @@ body {
     margin:20px;
 }
 
+footer {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    background-color: whitesmoke;
+    background-origin: padding-box;
+    display: block;
+    font-size: 12px;
+    min-height: 125px;
+    margin-top: 40px;
+    padding: 12px;
+    align-items: center;
+}
+
+.footer-logo {
+    margin: 10px;
+    height: 40px;
+}
+
 .btn {
     background-color: #3498db;
 }
@@ -25,6 +46,7 @@ body {
 
 .center {
     text-align: center;
+    margin: auto;
 }
 
 .loader {
@@ -51,6 +73,17 @@ body {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.login-container {
+    background-color: whitesmoke;
+    padding: 40px;
+    margin-top: 100px;
+    max-width: 300px
+}
+
+.login-title {
+    margin-bottom: 30px;
 }
 
 #imageCards-placeholder {

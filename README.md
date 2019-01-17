@@ -1,48 +1,52 @@
-flask swagger
-flask uploader
-flask and nginx
+# Stork
 
-# Export Requirements
+Classify IVF images in real time.
+
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+![Stork Logo](docs/images/logo.jpg)
+
+## Stork Requirements
+
+- Docker. Get it from [here](https://www.docker.com/).
+- `process` and `result` folders from ML training (Not included in this repository).
+
+## Running Stork using Docker
+
+### Load Environment Variables
 
 ```bash
-pip freeze > requirements.txt
+DOCKER_CONTAINER_NAME=stork \
+STORK_PORT=3000 \
+OUTPUT_DIR=/stork/data/output/
+UPLOAD_DIR=/stork/data/uploads/
+PROCESS_DIR=/stork/data/process/
+RESULT_DIR=/stork/data/result/
+STORK_TAG=latest
 ```
 
-## Production Consideration
-Use a production WSGI server instead
-
-## Run Manually
+### Run Docker Container
 
 ```bash
-$ python convert.py ../Images/train process/ 0
-$ cd run
-$ chmod 777 load_inception_v1.sh
-$ cd ..
-$ ./run/load_inception_v1.sh
-$ python predict.py v1 ../result/ ../../Images/test output.txt 2
-```
-
-### Run with Docker
-
-#### Environment Variables
-
-```bash
-OUTPUT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/output/
-UPLOAD_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/uploads/
-PROCESS_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/process/
-RESULT_DIR=~/Documents/2.GitHub/eipm/stork-ui/data/result/
-```
-
--v ${INPUT_DIR}:/input:ro \
-
-```bash
-docker run -it --rm --name stork \
--p 3000:80 \
+docker run -d --name ${DOCKER_CONTAINER_NAME} \
+--restart on-failure:5 \
+-p ${STORK_PORT}:80 \
 -v ${OUTPUT_DIR}:/output \
 -v ${UPLOAD_DIR}:/uploads \
 -v ${PROCESS_DIR}:/stork/src/stork_src/process:ro \
 -v ${RESULT_DIR}:/stork/src/stork_src/result:ro \
-stork:latest /bin/bash
+--env USERS_DICT="{ 'eipm': 'stork', 'embryology': 'RyJv3n', 'reviewer': 'e9wR8S' }" \
+eipm/stork:${STORK_TAG}
 ```
 
-python3 ${PREDICT_DIR}/predict.py v1 ${RESULT_DIR} /uploads /output/output_results.txt 2
+Where:
+
+- **${DOCKER_CONTAINER_NAME}**: The Stork docker container name.
+- **${STORK_PORT}**: The Stork host port.
+- **${OUTPUT_DIR}**: Where Stork image classification logs will be written.
+- **${UPLOAD_DIR}**: Where Stork image will be saved.
+- **${PROCESS_DIR}**: Required directory from ML training.
+- **${RESULT_DIR}**: Required directory from ML training.
+- **${USERS_DICT}**: The users credentials dictionary to authenticate.
+- **${STORK_TAG}**: The stork version to deploy.
