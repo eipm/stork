@@ -4,6 +4,8 @@ const baseApiUrl = 'api'
 // End Env variables
 
 let token = getCookie('stork-auth');
+checkTokenAndRedirectIfEmpty();
+
 setInterval(function(){
     checkTokenAndRedirectIfEmpty();
 }, 5000);
