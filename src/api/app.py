@@ -58,8 +58,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     if username and users_dict[username] == password:
-        redirect_to_index = redirect('/')
-        response = make_response(redirect_to_index)
+        response = make_response()
         uuid = str(myuuid.uuid4())
         response.set_cookie('stork-auth', uuid, max_age=3600)
         return response
