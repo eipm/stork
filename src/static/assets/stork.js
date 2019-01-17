@@ -4,11 +4,11 @@ const baseApiUrl = 'api'
 // End Env variables
 
 let token = getCookie('stork-auth');
-checkTokenAndRedirectIfEmpty();
-
-setInterval(function(){
     checkTokenAndRedirectIfEmpty();
-}, 5000);
+
+    setInterval(function(){
+        checkTokenAndRedirectIfEmpty();
+    }, 5000);
 
 function checkTokenAndRedirectIfEmpty() {
     token = getCookie('stork-auth');
@@ -69,7 +69,7 @@ function average(array) {
 
 function isAnImage(file) {
     if (file && file.type) {
-        return file.type.startsWith('image/');
+        return file.type.startsWith('image/jpeg');
     }
 
     return false;
