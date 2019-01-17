@@ -23,7 +23,6 @@ OUTPUT_DIR=/stork/data/output/
 UPLOAD_DIR=/stork/data/uploads/
 PROCESS_DIR=/stork/data/process/
 RESULT_DIR=/stork/data/result/
-USERS_DICT=USERS_DICT="{ 'eipm': 'stork', 'embryology': 'RyJv3n', 'reviewer': 'e9wR8S'  }"
 STORK_TAG=latest
 ```
 
@@ -37,6 +36,7 @@ docker run -d --name ${DOCKER_CONTAINER_NAME} \
 -v ${UPLOAD_DIR}:/uploads \
 -v ${PROCESS_DIR}:/stork/src/stork_src/process:ro \
 -v ${RESULT_DIR}:/stork/src/stork_src/result:ro \
+--env USERS_DICT="{ 'eipm': 'stork', 'embryology': 'RyJv3n', 'reviewer': 'e9wR8S' }" \
 eipm/stork:${STORK_TAG}
 ```
 
