@@ -36,11 +36,11 @@ footer {
     height: 40px;
 }
 
-.btn {
+.btn, .btn:visited, .btn:focus {
     background-color: #3498db;
 }
 
-.btn:hover{
+.btn:hover {
     background-color: #2378ac;
 }
 
@@ -55,6 +55,10 @@ footer {
 .center {
     text-align: center;
     margin: auto;
+}
+
+.align-top{
+    vertical-align: top;
 }
 
 .loader {
@@ -150,7 +154,7 @@ footer {
     margin: 10px;
 }
 
-.block{
+.block {
     display: block;
 }
 
