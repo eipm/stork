@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import uuid as myuuid
 import csv
+import cv2
+import glob
 import ntpath
 import datetime
 from ast import literal_eval
@@ -17,7 +19,7 @@ UPLOAD_DIR = '/uploads'
 OUTPUT_DIR = '/output'
 STATIC_DIR = '/stork/src'
 
-ALLOWED_EXTENSIONS = set(['jpg'])
+ALLOWED_EXTENSIONS = set(['jpg', 'png', 'tif', 'tiff'])
 
 static_file_dir = os.path.join(STATIC_DIR, 'static')
 
@@ -88,7 +90,6 @@ def upload_image():
     images_dict = {}
     # For each uploaded image
     for image in request.files.getlist("image"):
-    
         # 2. Save Image
         filename = secure_filename(image.filename)
         image.save(os.path.join(request_dir, filename))
@@ -99,15 +100,22 @@ def upload_image():
         # Analyze Data #
         # =============#
 
-    # 3. Specify Output log            
+    # 3. Normalize images to jpeg format
+    for image in glob.glob(os.path.join(request_dir, '*.*')):
+        img = cv2.imread(image)
+        os.remove(image)
+        filename = '%s.jpg' % os.path.splitext(image)[0]
+        cv2.imwrite(os.path.join(request_dir, filename), img)
+
+    # 4. Specify Output log
     output_filename = 'output_' + request_id + '.txt'
     output_file = os.path.join(OUTPUT_DIR, output_filename)
 
-    # 4. Run Stork
+    # 5. Run Stork
     python_command='python3 ' + os.environ['PREDICT_DIR'] + '/predict.py v1 ' + os.environ['RESULT_DIR'] + ' ' + request_dir + ' ' + output_file + ' 2'
     os.system(python_command)
 
-    # 5. Parse Stork Results            
+    # 6. Parse Stork Results
     image_results = list(csv.reader(open(output_file, 'r', encoding='utf8'), delimiter='\t'))
 
     # ==================#
@@ -115,7 +123,12 @@ def upload_image():
     # ==================#
 
     for image_result in image_results:
-        response_dict[images_dict[ntpath.basename(image_result[0])]] = { 'Good': image_result[1], 'Poor': image_result[2]}
+        filepath = ntpath.basename(image_result[0])
+        filename = os.path.splitext(filepath)[0]
+        for saved_file_name, initital_file_name in images_dict.items():
+            if saved_file_name.lower() in [("{}.{}".format(filename, ext)).lower() for ext in ALLOWED_EXTENSIONS]:
+                response_dict[initital_file_name] = { 'Good': image_result[1], 'Poor': image_result[2] }
+                break
 
     return jsonify(response_dict), 200
 
