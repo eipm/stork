@@ -19,7 +19,7 @@ UPLOAD_DIR = '/uploads'
 OUTPUT_DIR = '/output'
 STATIC_DIR = '/stork/src'
 
-ALLOWED_EXTENSIONS = set(['jpg, png'])
+ALLOWED_EXTENSIONS = set(['jpg', 'png', 'tif', 'tiff'])
 
 static_file_dir = os.path.join(STATIC_DIR, 'static')
 
@@ -126,9 +126,8 @@ def upload_image():
         filepath = ntpath.basename(image_result[0])
         filename = os.path.splitext(filepath)[0]
         for saved_file_name, initital_file_name in images_dict.items():
-            if (saved_file_name.lower() == (filename + '.png').lower()
-                    or saved_file_name.lower() == (filename + '.jpg').lower()):
-                response_dict[initital_file_name] = { 'Good': image_result[1], 'Poor': image_result[2], 'saved_file_name': saved_file_name, 'filename':filename }
+            if saved_file_name.lower() in [("{}.{}".format(filename, ext)).lower() for ext in ALLOWED_EXTENSIONS]:
+                response_dict[initital_file_name] = { 'Good': image_result[1], 'Poor': image_result[2] }
                 break
 
     return jsonify(response_dict), 200
