@@ -69,7 +69,7 @@ function average(array) {
 
 function isAnImage(file) {
     if (file && file.type) {
-        return file.type.startsWith('image/jpeg');
+        return file.type.startsWith('image/jpeg') || file.type.startsWith('image/png') || file.type.startsWith('image/tiff');
     }
 
     return false;
