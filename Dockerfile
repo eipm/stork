@@ -2,12 +2,12 @@ FROM python:3.6.8-stretch
 #===============================#
 # Docker Image Configuration	#
 #===============================#
-LABEL vendor='Englander Institute for Precision Medicine' \
+LABEL org.opencontainers.image.source='https://github.com/eipm/stork' \
+    vendor='Englander Institute for Precision Medicine' \
     description='STORK' \
     maintainer='als2076@med.cornell.edu' \
     base_image='python' \
     base_image_version='3.6.8-stretch' \
-    base_image_SHA256='sha256:ab2670ec57d486f73e49e7352de6a80b6767e3c996c1c0d0c158f17ae6f2d113'
 
 ENV APP_NAME='stork' \
     TZ='US/Eastern' \
