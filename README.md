@@ -26,6 +26,7 @@ To run the STORK framework please see the Flowchart.pdf and follow these steps:
 - and the percentage of validation images for the training step:
 
 Example Command
+
 ```bash
 python convert.py ../Images/train process/ 0
 ```
