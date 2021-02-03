@@ -6,6 +6,7 @@ const baseApiUrl = 'api'
 let token = getCookie('stork-auth');
 checkTokenAndRedirectIfEmpty();
 
+document.getElementById('year').innerHTML = new Date().getFullYear();
 setInterval(function(){
     checkTokenAndRedirectIfEmpty();
 }, 5000);
