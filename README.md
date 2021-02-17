@@ -10,7 +10,6 @@ https://doi.org/10.1038/s41746-019-0096-y
 [![DOI badge](https://zenodo.org/badge/doi/10.1038/s41746-019-0096-y.svg)](https://doi.org/10.1038/s41746-019-0096-y) ⬅️ read the manuscript here
 
 ![Stork Logo](docs/images/logo.jpg)
-## Stork
 
 Classify IVF images in real time.
 
