@@ -1,12 +1,20 @@
 # Stork
 
-Classify IVF images in real time.
+Source code for manuscript:
 
-[![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+"***Deep learning enables robust assessment and selection of human blastocysts after in vitro fertilization***"
+
+Published on [Nature Digital Medicine](https://doi.org/10.1038/s41746-019-0096-y), 2020/12/24:
+https://doi.org/10.1038/s41746-019-0096-y
+
+[![DOI badge](https://zenodo.org/badge/doi/10.1038/s41746-019-0096-y.svg)](https://doi.org/10.1038/s41746-019-0096-y) ⬅️ read the manuscript here
 
 ![Stork Logo](docs/images/logo.jpg)
+## Stork
+
+Classify IVF images in real time.
+
+[![Actions Status](https://github.com/eipm/stork/workflows/Docker/badge.svg)](https://github.com/eipm/stork/actions) [![Github](https://img.shields.io/badge/github-1.2.0-green?style=flat&logo=github)](https://github.com/eipm/stork) [![EIPM Docker Hub](https://img.shields.io/badge/EIPM%20docker%20hub-1.2.0-blue?style=flat&logo=docker)](https://hub.docker.com/repository/docker/eipm/stork) [![GitHub Container Registry](https://img.shields.io/badge/GitHub%20Container%20Registry-1.2.0-blue?style=flat&logo=docker)](https://github.com/orgs/eipm/packages/container/package/stork) [![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/downloads/release/python-360/) [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Run Stork
 
