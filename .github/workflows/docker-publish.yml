@@ -5,6 +5,7 @@ on:
     # Publish `main` as Docker `latest` image.
     branches:
       - main
+      - develop
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -18,11 +19,9 @@ env:
   IMAGE_NAME: stork
 
 jobs:
-
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
-
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
@@ -50,6 +49,7 @@ jobs:
 
           # Use Docker `latest` tag convention
           [ "$VERSION" == "main" ] && VERSION=latest
+          [ "$VERSION" == "develop" ] && VERSION=develop
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
@@ -62,7 +62,7 @@ jobs:
         with:
           username: ${{ secrets.EIPM_DOCKER_HUB_USERNAME }}
           password: ${{ secrets.EIPM_DOCKER_HUB_TOKEN }}
-        
+
       - name: Push image to EIPM Docker Hub
         run: |
           IMAGE_ID=eipm/$IMAGE_NAME
@@ -78,6 +78,7 @@ jobs:
 
           # Use Docker `latest` tag convention
           [ "$VERSION" == "main" ] && VERSION=latest
+          [ "$VERSION" == "develop" ] && VERSION=develop
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
