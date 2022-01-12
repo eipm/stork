@@ -1,4 +1,4 @@
-FROM python:3.6.8-stretch
+FROM python:3.7.9-buster
 #===============================#
 # Docker Image Configuration	#
 #===============================#
@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.source='https://github.com/eipm/stork' \
     description='STORK' \
     maintainer='als2076@med.cornell.edu' \
     base_image='python' \
-    base_image_version='3.6.8-stretch'
+    base_image_version='3.7.9-buster'
 
 ENV APP_NAME='stork' \
     TZ='US/Eastern' \
