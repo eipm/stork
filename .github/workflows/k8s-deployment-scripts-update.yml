@@ -1,0 +1,54 @@
+name: k8s-deployment-scripts-update
+
+on:
+  workflow_dispatch:
+    inputs:
+      image:
+        description: 'Image'
+        required: true
+      tag:
+        description: 'Tag'
+        required: true
+
+jobs:
+  # Print inputs
+  print:    
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pring inputs
+      run: |
+        echo ${{ inputs.image }}
+        echo ${{ inputs.tag }}
+
+  # Update repo eipm/k8s-deployment-scripts if version starts with v
+  update:
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(inputs.tag, 'v') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: k8s-deployment-scripts
+          ref: main
+          repository: eipm/k8s-deployment-scripts
+          token: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Update image
+        run: |
+          # Update the image version in the repo
+          cd k8s-deployment-scripts
+          echo DIRECTORY="$(pwd)"
+          IMAGE=${{ inputs.image }}
+          VERSION=$(echo ${{ inputs.tag }} | sed -e 's/^v//')
+          echo IMAGE=$IMAGE
+          echo VERSION=$VERSION
+          find ./ -type f -exec sed -i '' -e 's|'$IMAGE':.*|'$IMAGE:$VERSION'|g' {} \;
+
+      - name: Commit and push to repo
+        run: |
+          cd k8s-deployment-scripts
+          echo DIRECTORY="$(pwd)"
+          git config --global user.name "eipmgithubsvc1"
+          git config --global user.email "eipmgithubsvc1@gmail.com"
+          git commit -a -m "Updated image"
+          git push
